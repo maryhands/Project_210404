@@ -106,6 +106,8 @@ public class CreateAccount2 extends JFrame implements ActionListener, ItemListen
 		jp_jrb.setBounds(120, 245, 200, 100);
 		jp_jrb.add(jrb_male);
 		jp_jrb.add(jrb_female);
+		jrb_male.setFont(font);
+		jrb_female.setFont(font);
 		this.add(jp_jrb);
 		jrb_male.addItemListener(this);
 		jrb_female.addItemListener(this);
