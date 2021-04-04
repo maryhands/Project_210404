@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import calender.CreateAccount2;
+import calender.CreateAccount;
 import javazoom.jl.player.Player;
 
 public class LoginView extends JFrame {
@@ -95,7 +95,7 @@ public class LoginView extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == jbtn_add) {
-					CreateAccount2 ca = new CreateAccount2();
+					CreateAccount ca = new CreateAccount();
 				}
 			}
 		});
