@@ -1,12 +1,16 @@
-package calender;
+package calendar;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -15,6 +19,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+
+import calendar.EastMessage.BackGroundPanel;
 
 public class CreateAccount extends JFrame implements ActionListener, ItemListener {
 
@@ -53,13 +59,29 @@ public class CreateAccount extends JFrame implements ActionListener, ItemListene
 	String mailId = null;
 	String domain = null;
 	String address = null;
+	
+	String imgPath = "D:\\git import\\Project_210404\\project_210404\\src\\calendar\\";
+	   ImageIcon imgIcon = new ImageIcon(imgPath + "signUp.png");
+	   Image img = imgIcon.getImage();
+	   Image changeImg = img.getScaledInstance(400, 700, Image.SCALE_SMOOTH);
+	   ImageIcon changeIcon = new ImageIcon(changeImg);
+	   
+	   class BackGroundPanel extends JPanel { // 배경화면을 위해서 내부에 클래스 지정
+			public void paintComponent(Graphics g) {
+				g.drawImage(changeIcon.getImage(), 0, 0, null);
+				setOpaque(false);
+				super.paintComponent(g);
+
+			}
+		}
 
 	public CreateAccount() {
 		initDisplay();
 	}
 
 	public void initDisplay() {
-
+		
+		this.setContentPane(new BackGroundPanel());
 		this.setTitle("회원 가입");
 		this.setLayout(null);
 
@@ -108,6 +130,9 @@ public class CreateAccount extends JFrame implements ActionListener, ItemListene
 		jp_jrb.add(jrb_female);
 		jrb_male.setFont(font);
 		jrb_female.setFont(font);
+		jp_jrb.setOpaque(false);
+		jrb_male.setOpaque(false);
+		jrb_female.setOpaque(false);
 		this.add(jp_jrb);
 		jrb_male.addItemListener(this);
 		jrb_female.addItemListener(this);
@@ -162,7 +187,7 @@ public class CreateAccount extends JFrame implements ActionListener, ItemListene
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+	
 	}
 
 	public static void main(String[] args) {

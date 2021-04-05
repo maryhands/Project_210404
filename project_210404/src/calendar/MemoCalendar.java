@@ -1,4 +1,4 @@
-package calender;
+package calendar;
 // originally uploaded to http://blog.naver.com/azure0777
 
 import java.awt.*;

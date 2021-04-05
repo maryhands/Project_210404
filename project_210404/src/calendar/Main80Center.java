@@ -1,4 +1,4 @@
-package calender;
+package calendar;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
