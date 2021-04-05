@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import calender.CreateAccount;
+import calendar.CreateAccount;
 import javazoom.jl.player.Player;
 
 public class LoginView extends JFrame {
