@@ -17,9 +17,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
-import calendar.CreateAccount;
 import javazoom.jl.player.Player;
+import calendar.CreateAccount;
 
 public class LoginView extends JFrame implements Runnable{
 	// 로그인 창 관련 선언
@@ -38,7 +37,7 @@ public class LoginView extends JFrame implements Runnable{
 	String name = null;
 
 	// 배경화면 관련 선언
-	String imgPath = "C:\\GithubDesktop_ImportArea\\Project_210404\\project_210404\\src\\login\\";
+	String imgPath = "D:\\git import\\Project_210404\\project_210404\\src\\login\\";
 	ImageIcon imgIcon = new ImageIcon(imgPath + "Background.png");
 
 	// 음악 관련 선언
@@ -96,6 +95,7 @@ public class LoginView extends JFrame implements Runnable{
 					Thread th_login = new Thread(loginR1);
 					th_login.start();
 					JOptionPane.showMessageDialog(null, name+"님 환영합니다!");
+
 				}
 			}
 		});
@@ -115,6 +115,9 @@ public class LoginView extends JFrame implements Runnable{
 				}				
 			}
 		});
+		jbtn_add.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		jbtn_add.setBounds(48, 350, 120, 40);
+		this.add(jbtn_add);
 		
 		// 음악 정지 이벤트
 		jbtn_stop.addActionListener(action);
