@@ -60,7 +60,7 @@ public class CreateAccount extends JFrame implements ActionListener, ItemListene
 	String domain = null;
 	String address = null;
 	
-	String imgPath = "D:\\git import\\Project_210404\\project_210404\\src\\calendar\\";
+	String imgPath = "project_210404\\src\\calendar\\";
 	   ImageIcon imgIcon = new ImageIcon(imgPath + "signUp.png");
 	   Image img = imgIcon.getImage();
 	   Image changeImg = img.getScaledInstance(400, 700, Image.SCALE_SMOOTH);

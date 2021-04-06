@@ -37,7 +37,7 @@ public class LoginView extends JFrame implements Runnable{
 	String name = null;
 
 	// 배경화면 관련 선언
-	String imgPath = "D:\\git import\\Project_210404\\project_210404\\src\\login\\";
+	String imgPath = "project_210404\\src\\login\\";
 	ImageIcon imgIcon = new ImageIcon(imgPath + "Background.png");
 
 	// 음악 관련 선언

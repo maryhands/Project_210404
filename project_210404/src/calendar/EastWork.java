@@ -40,7 +40,7 @@ public class EastWork extends JFrame implements ActionListener {
 	int workrow = 0;
 	int leaverow = 0;
 
-	String imgPath = "D:\\git import\\Project_210404\\project_210404\\src\\calendar\\";
+	String imgPath = "project_210404\\src\\calendar\\";
 	ImageIcon imgIcon = new ImageIcon(imgPath + "watercolor.jpg");
 
 	class BackGroundPanel extends JPanel { // 배경화면을 위해서 내부에 클래스 지정
