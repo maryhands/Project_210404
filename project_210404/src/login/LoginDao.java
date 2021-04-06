@@ -33,6 +33,7 @@ public class LoginDao {
 	}
 	public static void main(String[] args) {
 		LoginDao ld = new LoginDao();
+		System.out.println("만세!!!!!");
 		ld.login("","");
 	}
 }
