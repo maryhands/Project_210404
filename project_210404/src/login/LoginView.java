@@ -20,7 +20,7 @@ import javax.swing.JTextField;
 import calendar.CreateAccount;
 import javazoom.jl.player.Player;
 
-public class LoginView extends JFrame {
+public class LoginView extends JFrame implements Runnable{
 	// 로그인 창 관련 선언
 	String nickName = null;
 	JPanel jpl = new JPanel();
@@ -36,7 +36,7 @@ public class LoginView extends JFrame {
 	Font font2 = new Font("맑은 고딕", Font.CENTER_BASELINE, 13);
 
 	// 배경화면 관련 선언
-	String imgPath = "D:\\git import\\Project_210404\\project_210404\\src\\login\\";
+	String imgPath = "C:\\GithubDesktop_ImportArea\\Project_210404\\project_210404\\src\\login\\";
 	ImageIcon imgIcon = new ImageIcon(imgPath + "Background.png");
 
 	// 음악 관련 선언
@@ -85,18 +85,31 @@ public class LoginView extends JFrame {
 		this.add(jlb_pw);
 		this.add(jpf_pw);
 
-		// 로그인
+		// 로그인 + 버튼 효과음
+		jbtn_login.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() == jbtn_login) {
+					Runnable loginR1 = new LoginView();
+					Thread th_login = new Thread(loginR1);
+					th_login.start();
+				}
+			}
+		});
 		jbtn_login.setBounds(178, 350, 120, 40);
 		jbtn_login.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		this.add(jbtn_login);
 
-		// 회원가입
+		// 회원가입 + 버튼효과음
 		jbtn_add.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == jbtn_add) {
+					Runnable addR1 = new LoginView();
+					Thread th_add = new Thread(addR1);
+					th_add.start();
 					CreateAccount ca = new CreateAccount();
-				}
+				}				
 			}
 		});
 		jbtn_add.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -117,8 +130,7 @@ public class LoginView extends JFrame {
 		jbtn_restart.addActionListener(action);
 
 		////// thread 선정 - JFrame에 영향을 줄 수 있는 독립적인 작업을 한다고 생각하면 좋음.
-
-		thread = new Thread(() -> {
+		thread = new Thread(() -> {//ArrowFuntion(공부하기에는 안좋음)를 이용해 이 스레드는 이것만 플레이 하도록함.
 			try {
 				do { // 무조건 실행하는 곳.
 					isLoop = true;
@@ -133,11 +145,27 @@ public class LoginView extends JFrame {
 			}
 		});
 		thread.start();
+		
 	}// end of Display();
+	
+	//버튼 효과음 부분(thread 받는 부분)
+	public void run() {
+		synchronized (jbtn_add) {
+			try {
+				file = new File(imgPath + "PaperSound.mp3");
+				fis = new FileInputStream(file);
+				bis = new BufferedInputStream(fis);
+				player = new Player(bis);
+				player.play();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}	
+	}
 
 	@SuppressWarnings("deprecation") // 인터페이스를 선언해서 사용하는 것 인스턴스화 1-5의 원리를 이용한 것.
-	public ActionListener action = (ActionEvent e) -> { // ArrowFuntion - 파이선 등에서 사용하던 것을 자바에서 이용해 사용하는 것 new
-														// actionListener({})의 원리, 묵시적인 것이라서 되도록이면 쓰지 말자.
+	public ActionListener action = (ActionEvent e) -> { // ArrowFuntion - 파이선 등에서 사용하던 것을 자바에서 이용해 사용하는 것
+														// new actionListener({})의 원리, 묵시적인 것이라서 되도록이면 쓰지 말자.
 		if (e.getSource() == jbtn_stop) {
 			thread.suspend();
 			isLoop = false;
