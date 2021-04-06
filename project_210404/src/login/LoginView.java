@@ -95,6 +95,7 @@ public class LoginView extends JFrame implements Runnable{
 					Runnable loginR1 = new LoginView();
 					Thread th_login = new Thread(loginR1);
 					th_login.start();
+					JOptionPane.showMessageDialog(null, name+"님 환영합니다!");
 				}
 			}
 		});
@@ -115,20 +116,6 @@ public class LoginView extends JFrame implements Runnable{
 			}
 		});
 		
-		//로그인
-		jbtn_login.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == jbtn_login) {
-					JOptionPane.showMessageDialog(null, name+"님 환영합니다!");
-				}
-			}
-		});
-		
-		jbtn_add.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		jbtn_add.setBounds(48, 350, 120, 40);
-		this.add(jbtn_add);
-
 		// 음악 정지 이벤트
 		jbtn_stop.addActionListener(action);
 		jbtn_stop.setContentAreaFilled(false);
