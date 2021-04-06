@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -34,6 +35,7 @@ public class LoginView extends JFrame {
 	JButton jbtn_stop = new JButton("음악 중지");
 	Font font = new Font("맑은 고딕", Font.BOLD, 15);
 	Font font2 = new Font("맑은 고딕", Font.CENTER_BASELINE, 13);
+	String name = null;
 
 	// 배경화면 관련 선언
 	String imgPath = "D:\\git import\\Project_210404\\project_210404\\src\\login\\";
@@ -99,6 +101,17 @@ public class LoginView extends JFrame {
 				}
 			}
 		});
+		
+		//로그인
+		jbtn_login.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() == jbtn_login) {
+					JOptionPane.showMessageDialog(null, name+"님 환영합니다!");
+				}
+			}
+		});
+		
 		jbtn_add.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		jbtn_add.setBounds(48, 350, 120, 40);
 		this.add(jbtn_add);

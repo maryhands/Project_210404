@@ -1,5 +1,6 @@
 package calendar;
 
+import java.awt.Container;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 
 import calendar.EastWork.BackGroundPanel;
@@ -21,17 +23,22 @@ public class EastWork extends JFrame implements ActionListener {
 	String cols[] = { "출근 시간", "퇴근 시간" };
 	String data[][] = new String[17][2];
 	Font font = new Font("맑은 고딕", Font.BOLD, 15);
-
+	Font font_time = new Font("맑은 고딕", Font.PLAIN, 11
+			);
 	DefaultTableModel dtm = new DefaultTableModel(data, cols) {
 		public boolean isCellEditable(int d, int c) {
 			return false;
 
 		}
 	};
+	
 	JTable jtb = new JTable(dtm);
 	JScrollPane jsp = new JScrollPane(jtb);
 	JButton work = new JButton("출근");
 	JButton leave = new JButton("퇴근");
+	
+	int workrow = 0;
+	int leaverow = 0;
 
 	String imgPath = "D:\\git import\\Project_210404\\project_210404\\src\\calendar\\";
 	ImageIcon imgIcon = new ImageIcon(imgPath + "watercolor.jpg");
@@ -59,7 +66,7 @@ public class EastWork extends JFrame implements ActionListener {
 		leave.setFont(font);
 		jtb.getTableHeader().setReorderingAllowed(false); // 이동 불가
 		jtb.getTableHeader().setResizingAllowed(false); // 크기 조절 불가
-		jtb.setFont(font);//?? 테이블은 폰트 적용이 안되고 있음
+		jtb.setFont(font_time);//?? 테이블은 폰트 적용이 안되고 있음
 		this.add(jsp);
 		this.add(work);
 		this.add(leave);
@@ -69,26 +76,25 @@ public class EastWork extends JFrame implements ActionListener {
 		this.setSize(420, 450);
 		this.setVisible(true);
 		this.setLocationRelativeTo(null);// 가운데 띄우게하기
+		work.addActionListener(this);
+		leave.addActionListener(this);
 	}
-	
-	///출근시간 퇴근시간 출력은 작성중- 아직 dtm에 출력이 안되고 있음
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy / MM / dd / HH:mm:ss");
 		Object obj = ae.getSource();
-		int w = 0;
-		int l = 0;
 		if (work == obj) {
 			String time_work = sdf.format(cal.getTime());
-			dtm.setValueAt(time_work, w, 0);
-			w++;
+			dtm.setValueAt(time_work, workrow, 0);
+			workrow++;
 		} else if (leave == obj) {
 			String time_leave = sdf.format(cal.getTime());
-			dtm.setValueAt(time_leave, l, 1);
-			l++;
+			dtm.setValueAt(time_leave, leaverow, 1);
+			leaverow++;
 			
 		}		
 	}
+
 }
