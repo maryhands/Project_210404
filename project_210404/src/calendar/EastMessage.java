@@ -28,7 +28,7 @@ public class EastMessage extends JFrame {
 
 	Font font = new Font("맑은 고딕", Font.BOLD, 15);
 	
-	String imgPath = "D:\\git import\\Project_210404\\project_210404\\src\\calendar\\";
+	String imgPath = "project_210404\\src\\calendar\\";
 	ImageIcon imgIcon = new ImageIcon(imgPath + "blossom.jpg");
 
 	class BackGroundPanel extends JPanel { // 배경화면을 위해서 내부에 클래스 지정
