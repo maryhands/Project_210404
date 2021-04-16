@@ -1,21 +1,19 @@
-package login;
+package dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class DBConnectionMgr {
-   private final static String _DRIVER = "oracle.jdbc.driver.OracleDriver";
-   private final static String _URL    = "jdbc:oracle:thin:@192.168.0.244:1521:orcl11";
-   private final static String _USER    = "scott";
-   private final static String _PW    = "tiger";
-   private static DBConnectionMgr dbMgr = null;
-   //이른 인스턴스화 eager
-   private static DBConnectionMgr dbMgr2 = new DBConnectionMgr();
+	private static final String _DRIVER = "oracle.jdbc.driver.OracleDriver";
+	private static final String _URL = "jdbc:oracle:thin:@192.168.0.15:1521:orcl11";
+	private static final String _USER = "project";
+	private static final String _PW = "tiger";
+    private static DBConnectionMgr dbMgr = null;
    Connection con = null;
-   private DBConnectionMgr() {}
-   //게으른 인스턴스화 - 선언과 생성이 따로 쓰여졌을 때
+
    public static DBConnectionMgr getInstance() {
       if(dbMgr == null) {
          dbMgr = new DBConnectionMgr();
@@ -26,7 +24,7 @@ public class DBConnectionMgr {
       try {
          Class.forName(_DRIVER);
          con = DriverManager.getConnection(_URL, _USER, _PW);
-         /* 트랜잭션처리
+         /* 트랜잭션처리 - 제대로 작동되는지 확인 후 조정해놓자.
          con.setAutoCommit(true);//켜둔다.
          con.setAutoCommit(false);//꺼둔다.
          con.commit();
@@ -63,6 +61,23 @@ public class DBConnectionMgr {
          // TODO: handle exception
       }
    }
+	public static void freeConnection(ResultSet rs, CallableStatement cstmt, Connection con){
+		try {
+			if(rs !=null) rs.close();
+			if(cstmt !=null) cstmt.close();
+			if(con !=null) con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public static void freeConnection(Connection con,CallableStatement cstmt){
+		try {
+			if(cstmt !=null) cstmt.close();
+			if(con !=null) con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
 
 

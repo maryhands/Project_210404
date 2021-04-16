@@ -18,11 +18,15 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javazoom.jl.player.Player;
+import jdk.nashorn.internal.scripts.JO;
 import calendar.CreateAccount;
+import calendar.Main80;
+import dao.CreateAccountVO;
+import dao.LoginDao;
 
-public class LoginView extends JFrame implements Runnable{
+public class LoginView extends JFrame implements Runnable, ActionListener{
 	// 로그인 창 관련 선언
-	String nickName = null;
+	LoginDao ld = new LoginDao();
 	JPanel jpl = new JPanel();
 	JLabel jlb_id = new JLabel("ID :");
 	JLabel jlb_pw = new JLabel("PW :");
@@ -34,7 +38,7 @@ public class LoginView extends JFrame implements Runnable{
 	JButton jbtn_stop = new JButton("음악 중지");
 	Font font = new Font("맑은 고딕", Font.BOLD, 15);
 	Font font2 = new Font("맑은 고딕", Font.CENTER_BASELINE, 13);
-	String name = null;
+	String name = "";
 
 	// 배경화면 관련 선언
 	String imgPath = "project_210404\\src\\login\\";
@@ -47,7 +51,7 @@ public class LoginView extends JFrame implements Runnable{
 	private Player player;
 	private Thread thread;
 	private boolean isLoop;
-
+	
 	class BackGroundPanel extends JPanel { // 배경화면을 위해서 내부에 클래스 지정
 		public void paintComponent(Graphics g) {
 			g.drawImage(imgIcon.getImage(), 0, 0, null);
@@ -67,8 +71,8 @@ public class LoginView extends JFrame implements Runnable{
 		this.setLayout(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("로그인");
-		this.setVisible(true);
 		this.setSize(360, 760);
+		this.setVisible(true);
 		this.setResizable(false);// 크기조정 불가
 		this.setLocation(800, 250);
 
@@ -86,35 +90,14 @@ public class LoginView extends JFrame implements Runnable{
 		this.add(jlb_pw);
 		this.add(jpf_pw);
 
-		// 로그인 + 버튼 효과음
-		jbtn_login.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == jbtn_login) {
-					Runnable loginR1 = new LoginView();
-					Thread th_login = new Thread(loginR1);
-					th_login.start();
-					JOptionPane.showMessageDialog(null, name+"님 환영합니다!");
-
-				}
-			}
-		});
+		// 로그인
+		jbtn_login.addActionListener(this); //효과음 + 연결
 		jbtn_login.setBounds(178, 350, 120, 40);
 		jbtn_login.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		this.add(jbtn_login);
 
-		// 회원가입 + 버튼효과음
-		jbtn_add.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == jbtn_add) {
-					Runnable addR1 = new LoginView();
-					Thread th_add = new Thread(addR1);
-					th_add.start();
-					CreateAccount ca = new CreateAccount();
-				}				
-			}
-		});
+		// 회원가입
+		jbtn_add.addActionListener(this); //효과음 + 연결
 		jbtn_add.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		jbtn_add.setBounds(48, 350, 120, 40);
 		this.add(jbtn_add);
@@ -131,13 +114,14 @@ public class LoginView extends JFrame implements Runnable{
 
 		// 음악 재시작 이벤트
 		jbtn_restart.addActionListener(action);
+		
 
 		////// thread 선정 - JFrame에 영향을 줄 수 있는 독립적인 작업을 한다고 생각하면 좋음.
 		thread = new Thread(() -> {//ArrowFuntion(공부하기에는 안좋음)를 이용해 이 스레드는 이것만 플레이 하도록함.
 			try {
 				do { // 무조건 실행하는 곳.
 					isLoop = true;
-					file = new File(imgPath + "MapleLoginMusic.mp3");
+					file = new File(imgPath + "TalesWeaverLoginMusic.mp3");
 					fis = new FileInputStream(file);
 					bis = new BufferedInputStream(fis);
 					player = new Player(bis);
@@ -164,7 +148,7 @@ public class LoginView extends JFrame implements Runnable{
 				e.printStackTrace();
 			}
 		}	
-	}
+	}//end of run(effect sound);
 
 	@SuppressWarnings("deprecation") // 인터페이스를 선언해서 사용하는 것 인스턴스화 1-5의 원리를 이용한 것.
 	public ActionListener action = (ActionEvent e) -> { // ArrowFuntion - 파이선 등에서 사용하던 것을 자바에서 이용해 사용하는 것
@@ -195,10 +179,52 @@ public class LoginView extends JFrame implements Runnable{
 			jbtn_stop.setBounds(125, 400, 100, 30);
 			this.add(jbtn_stop);
 		}
-	};// end of actionListener
+	};// end of actionListener(sound)
 
 	public static void main(String[] args) {
 		LoginView lv = new LoginView();
 		lv.start();
 	}
-}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == jbtn_add) {
+				Runnable addR1 = new LoginView();
+				Thread th_add = new Thread(addR1);
+				th_add.start();
+				CreateAccount ca = new CreateAccount();
+			}
+			else if (e.getSource() == jbtn_login) {
+					Runnable loginR1 = new LoginView();
+					Thread th_login = new Thread(loginR1);
+					th_login.start();
+			if("".equals(jtf_id.getText()) ||"".equals(jpf_pw.getText()) ) {
+					JOptionPane.showMessageDialog(null, "아이디와 비번을 확인해주세요.");
+			}//공백 상태에서 로그인 버튼 누르면 에러 호출
+				try {
+					String p_id = jtf_id.getText(); //id 적은 문자를 문자열로 받는 것을 새로 변수선언함.
+					String p_pw = jpf_pw.getText(); //pw 적은 문자를 문자열로 받는 것을 새로 변수선언함.
+					name = ld.login(p_id, p_pw); //LoginDao에 있는 login(p_id, p_pw)메소드를 실행하고 그 값을 받음. - msg의 값을 받음.
+					if("아이디가 존재하지 않습니다.".equals(name)) {//name(msg값을 가진)의 값이 ""와 같다면
+						JOptionPane.showMessageDialog(null, "아이디가 일치하지 않습니다.");
+						return;//여기서 if문 끝냄. - 밑에 있는 것은 실행 안함.
+					}else if("비밀번호가 틀립니다.".equals(name)) {
+						JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다.");
+						return;							
+					}else {
+						JOptionPane.showMessageDialog(null, name+"님 환영합니다.");
+						this.setVisible(false);
+						thread.stop();
+						if("이스터에그".equals(name)) {
+							System.out.println("이스터에그 넣을거임.");
+							return;
+						} else {
+							Main80 m80 = new Main80();							
+						}
+					}
+				}catch (Exception e2) {
+					e2.printStackTrace();
+				}
+					
+			}
+		}
+	}

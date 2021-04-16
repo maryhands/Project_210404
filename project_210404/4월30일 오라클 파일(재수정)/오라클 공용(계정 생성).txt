@@ -1,0 +1,22 @@
+그대로 cmd 창에 적으면 됩니다.
+
+sqlplus "/as sysdba
+
+create user project identified by tiger;
+
+grant connect, resource to project;
+
+grant create sequence to project;
+
+grant create trigger to project;
+
+grant create view to project;
+
+grant create table to project with admin option;
+
+grant create session to project with admin option;
+
+create tablespace t_project filename '경로\t_project.dbf' size 50M;
+(경로는 C:\app\lenovo\oradata\orcl11 처럼 ordata가 저장된 경로 선택.)
+
+alter user project quota unlimited on t_project;

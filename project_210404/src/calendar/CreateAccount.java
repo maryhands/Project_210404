@@ -8,6 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.TextEvent;
+import java.awt.event.TextListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -15,17 +19,23 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import calendar.EastMessage.BackGroundPanel;
+import dao.CreateAccountDao;
+import dao.CreateAccountVO;
 
-public class CreateAccount extends JFrame implements ActionListener, ItemListener {
-
+public class CreateAccount extends JFrame implements ActionListener, ItemListener{
+	
+	CreateAccountDao cad = null;
+	CreateAccountVO caVO = null;
 	Font font = new Font("맑은 고딕", Font.PLAIN, 20);
 	JLabel jl_id = new JLabel("ID: ");
+	JLabel jl_id_overlap = new JLabel();
 	JLabel jl_pw = new JLabel("PW: ");
 	JLabel jl_dept = new JLabel("부서명: ");
 	String[] array_dept = { "총무팀", "개발팀", "영업팀" };
@@ -92,6 +102,34 @@ public class CreateAccount extends JFrame implements ActionListener, ItemListene
 		this.add(idTextField);
 		idTextField.setFont(font);
 		idTextField.setBounds(150, 50, 150, 30);
+		this.add(jl_id_overlap);
+		jl_id_overlap.setBounds(320, 50, 150, 30);
+		idTextField.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				id = idTextField.getText();
+				cad = new CreateAccountDao();
+				caVO = new CreateAccountVO();
+				caVO.setId(id);
+				cad.overlapID(caVO);
+				if(cad.overlapID(caVO)) {
+					jl_id_overlap.setForeground(Color.red);
+					jl_id_overlap.setText("중복");			
+				} else {
+					jl_id_overlap.setForeground(Color.black);
+					jl_id_overlap.setText("사용 가능");
+				}
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {}
+		});
+		
 
 		// 비밀번호 입력
 		this.add(jl_pw);
@@ -198,7 +236,7 @@ public class CreateAccount extends JFrame implements ActionListener, ItemListene
 	public void actionPerformed(ActionEvent ae) {
 		Object obj = ae.getSource();
 		if (closeButton == obj) {
-			dispose();
+			this.dispose();
 		} else if (signUpButton == obj) {
 			id = idTextField.getText();
 			pw = new String(pwField.getPassword());
@@ -206,7 +244,25 @@ public class CreateAccount extends JFrame implements ActionListener, ItemListene
 			name = nameTextField.getText();
 			mailId = mailIdTextField.getText();
 			address = mailIdTextField.getText() + "@" + domainTextField.getText();
-			System.out.println(id + " " + " " + pw + " " + dept + " " + name + "  " + sex + "  " + address);
+			cad = new CreateAccountDao();
+			caVO = new CreateAccountVO();
+			///////////////
+			caVO.setId(id);
+			caVO.setPw(pw);
+			caVO.setDeptno(dept);
+			caVO.setName(name);
+			caVO.setEmail(address);
+			caVO.setGender(sex);
+			///////////////
+			cad.insert(caVO);
+			if("".equals(id) ||"".equals(pw) ||"".equals(dept) ||"".equals(name) ||"".equals(mailId) ||"".equals(mailIdTextField.getText())||"".equals(domainTextField.getText()) ) {
+				JOptionPane.showMessageDialog(null, "빈칸을 모두 작성해주세요.");
+				return;
+			} //공백 상태에서 로그인 버튼 누르면 에러 호출
+			else {
+				JOptionPane.showMessageDialog(null, "등록되었습니다.");
+				super.dispose();
+			}
 		}
 	}
 
@@ -217,6 +273,7 @@ public class CreateAccount extends JFrame implements ActionListener, ItemListene
 			} else if (ie.getItem() == jrb_female) {
 				sex = jrb_female.isSelected() ? "여" : "남";
 			}
+			
 		}
 	}
 }
