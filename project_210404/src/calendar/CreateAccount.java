@@ -239,6 +239,7 @@ public class CreateAccount extends JFrame implements ActionListener, ItemListene
 		System.out.println("깃 연습용으로 수정했음");
 		System.out.println("하나 더 추가했음");
 		System.out.println("스스로 연습");
+		System.out.println("스스로 연습2");
 
 		if (ie.getStateChange() == ItemEvent.SELECTED) {
 
