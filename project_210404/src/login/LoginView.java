@@ -17,8 +17,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javazoom.jl.player.Player;
+
 import calendar.CreateAccount;
+import javazoom.jl.player.Player;
 
 public class LoginView extends JFrame implements Runnable{
 	// 로그인 창 관련 선언
