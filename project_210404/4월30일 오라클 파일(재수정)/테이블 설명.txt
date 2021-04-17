@@ -1,0 +1,12 @@
+Account_info
+=회원가입 테이블
+
+DateMemo
+=일정 넣는 테이블
+
+Save_rec_email
+= 내 email 정보 받는 테이블
+(주소록에 필요한 컬럼 말하면 추가하겠음.)
+
+Record_Work_data
+= 근태기록 저장 테이블

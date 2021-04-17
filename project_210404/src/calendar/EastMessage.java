@@ -25,7 +25,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import dao.CreateAccountVO;
+
 public class EastMessage extends JFrame {
+	Main80East m80e = null;
+	CreateAccountVO caVO = null;
 	JLabel jlb_sen = new JLabel("보내는 사람");
 	JLabel jlb_rec = new JLabel("받는 사람");
 	JLabel jlb_title = new JLabel("제목");
@@ -57,11 +61,14 @@ public class EastMessage extends JFrame {
 
 		}
 	}
-
+	
 	public EastMessage() {
 		initDisplay();
 	}
-
+	
+	public EastMessage(Main80East m80e) {
+		this.m80e=m80e;
+	}
 	public void initDisplay() {
 
 		this.setContentPane(new BackGroundPanel());
